@@ -41,9 +41,11 @@ Route::post('/login', function(Request $request) {
 });
 
 
-Route::middleware('auth')->get('/user', function (Request $request) {
-    return $request->user();
-    // return auth()->user();
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    // $user = $request->user(); //this also works
+    $user =  auth()->user();
+
+    return $user;
 });
 
 
