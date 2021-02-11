@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +20,32 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+//AUTH ROUTES
+Route::get('/user-create', function(Request $request) {
+    User::create([
+        'name' => 'trojan',
+        'email' => 'trojan@test.com',
+        'password' => Hash::make('trojan1%')
+    
+    ]);
+});
+
+Route::get('/login', function(Request $request) {
+    $credentials = [
+        'name' => 'trojan',
+        'password' => 'trojan1%'
+    ];
+
+    $token = auth()->attempt($credentials);
+    return $token;
+});
+
+
+
+
+
 
 
 //VISITOR & USER
@@ -41,9 +70,6 @@ Route::group(['prefix'=>'dashboard'], function() {
     Route::get('/registrations', [App\Http\Controllers\UserController::class, 'showRegistrations']);
 
 });
-
-
-
 
 
 
