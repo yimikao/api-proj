@@ -17,29 +17,33 @@ use App\Models\User;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 
 //AUTH ROUTES
-Route::get('/user-create', function(Request $request) {
+Route::post('/user-create', function(Request $request) {
+    // die(var_dump($request->input("name")));
     User::create([
-        'name' => 'trojan',
-        'email' => 'trojan@test.com',
-        'password' => Hash::make('trojan1%')
-    
+        "name" =>  $request->input('name'),
+        "email" => $request->input('email'),
+        "password" =>  Hash::make($request->input('password')),
+
     ]);
 });
 
-Route::get('/login', function(Request $request) {
+Route::post('/login', function(Request $request) {
     $credentials = [
-        'name' => 'trojan',
-        'password' => 'trojan1%'
+        "email" => $request->input('email'),
+        "password" => $request->input('password'),
+
     ];
 
-    $token = auth()->attempt($credentials);
+    $token = auth('api')->attempt($credentials);
     return $token;
+});
+
+
+Route::middleware('auth')->get('/user', function (Request $request) {
+    return $request->user();
+    // return auth()->user();
 });
 
 
