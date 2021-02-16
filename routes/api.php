@@ -49,7 +49,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-// Route::get('/users', [App\Http\Controllers\UserController::class, 'index']);
+// Route::get('/users', [App\Http\Controllers\UserController::class,'index']);
 
 
 
