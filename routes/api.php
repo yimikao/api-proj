@@ -20,7 +20,7 @@ use App\Models\User;
 
 //AUTH ROUTES
 Route::post('/user-create', function(Request $request) {
-    // die(var_dump($request->input("name")));
+
     User::create([
         "name" =>  $request->input('name'),
         "email" => $request->input('email'),
