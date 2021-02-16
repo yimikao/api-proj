@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Registration;
-use App\Models\Event;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RegistrationController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,9 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::get();
+        return $users;
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -25,33 +25,31 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Event $event)
+    public function store(Request $request)
     {
-        return Registration::create(['event_id' => $event->id]);
-        // return $registration;
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Registration  $registration
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Registration $registration)
+    public function show(User $user)
     {
-        //
+        
+        return $user->events;
     }
-
-
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Registration  $registration
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Registration $registration)
+    public function update(Request $request, User $user)
     {
         //
     }
@@ -59,11 +57,18 @@ class RegistrationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Registration  $registration
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Registration $registration)
+    public function destroy(User $user)
     {
         //
     }
-}
+
+    public function showRegistrations() {
+        $user = Auth::user();
+
+        return $user->registrations->count();
+
+    }
+}   

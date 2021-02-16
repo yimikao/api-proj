@@ -49,30 +49,27 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
-
-
+// Route::get('/users', [App\Http\Controllers\UserController::class, 'index']);
 
 
 
 //VISITOR & USER
-Route::post('/register/{event}', [App\Http\Controllers\RegistrationController::class, 'store']);
-Route::get('/allevents', [App\Http\Controllers\UserController::class, 'index']);
-Route::get('/showevent', [App\Http\Controllers\UserController::class, 'show']);
+Route::post('/events/{event}/register', [App\Http\Controllers\RegistrationController::class, 'store']);
+Route::get('/events', [App\Http\Controllers\EventController::class, 'index']);
+Route::get('/events/{event}', [App\Http\Controllers\EventController::class, 'show']);
+Route::get('/allevents/{user}', [App\Http\Controllers\UserController::class, 'show']);
 
 // Auth::routes();//Ask a question about this(is it Auth::api()->routes())
 
+
 //USER
-Route::group(['prefix'=>'dashboard'], function() {
-    Route::get('/events', [App\Http\Controllers\EventController::class, 'index']);
-    Route::get('/events/{event}', [App\Http\Controllers\EventController::class, 'show']);
-    // Route::get('/events/new', [App\Http\Controllers\EventController::class, 'create']);
+Route::group(['middleware' => 'auth:api', 'prefix'=>'dashboard'], function() {
+    
+    
     Route::post('/events', [App\Http\Controllers\EventController::class, 'store']);
-    // Route::get('/events/edit', [App\Http\Controllers\EventController::class, 'edit']);
-    Route::post('/events/{event}', [App\Http\Controllers\EventController::class, 'update']);
+    Route::patch('/events/{event}', [App\Http\Controllers\EventController::class, 'update']);
     Route::delete('/events/{event}', [App\Http\Controllers\EventController::class, 'destroy']);
 
-
-    // Route::get('/register/{event}', [App\Http\Controllers\RegistrationController::class, 'store']);
     Route::get('/registrations', [App\Http\Controllers\UserController::class, 'showRegistrations']);
 
 });

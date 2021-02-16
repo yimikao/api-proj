@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
@@ -25,7 +26,13 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        return Event::create($request->all());
+        return Event::create([
+            'user_id' => Auth::id(),
+            'theme' => $request->input('theme'),
+            'caption' => $request->input('caption'),
+            'date' => $request->input('date'),
+            'time' => $request->input('time'),
+        ]);
     }
 
     /**
@@ -36,7 +43,7 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        $event = Event::find($id);
+        $event = Event::findOrFail($id);
         return $event;
     }
 
@@ -49,7 +56,7 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $event = Event::find($id);
+        $event = Event::findOrFail($id);
         $event->update($request->all());
         return $event;
     }
@@ -62,6 +69,6 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        return Event::find($id)->delete();
+        return Event::findOrFail($id)->delete();
     }
 }
